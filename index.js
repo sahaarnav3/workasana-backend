@@ -32,9 +32,26 @@ async function passwordHashAndSave(password) {
   return hashedPassword;
 }
 
-// const verifyJWT = (req, res, next) => {
+//A middleware to check if there is a token. If there is then redirect user to home page, or redirect user to login page.(to generate a new token).
+const verifyJWT = (req, res, next) => {
+  const token = req.headers["authorization"];
+  if (!token)
+    return res
+      .status(401)
+      .json({ message: "No token provided. Get a token first." });
 
-// }
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    console.log(decodedToken);
+    req.user = decodedToken;
+    next();
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(402)
+      .json({ error: "Invalid or Expired Token. Create another token." });
+  }
+};
 
 app.get("/", (req, res) => {
   res.send("<h1>Hi, Welcome to homepage of this Backend App.</h1>");
@@ -97,24 +114,20 @@ app.post("/auth/login", async (req, res) => {
 
     const userResponse = await User.find({ email: req.body.email });
     if (userResponse.length <= 0)
-      return res
-        .status(404)
-        .json({
-          error:
-            "User with given email-ID is not present. Please try again with another email.",
-        });
+      return res.status(404).json({
+        error:
+          "User with given email-ID is not present. Please try again with another email.",
+      });
     // console.log(userResponse);
     const passwordMatch = await bcrypt.compare(
       req.body.password,
       userResponse[0].password
     );
     if (!passwordMatch)
-      return res
-        .status(401)
-        .json({
-          error:
-            "Entered Password is Incorrect. Please try again with correct password.",
-        });
+      return res.status(401).json({
+        error:
+          "Entered Password is Incorrect. Please try again with correct password.",
+      });
     const token = jwt.sign(
       {
         _id: userResponse[0]._id,
@@ -124,7 +137,7 @@ app.post("/auth/login", async (req, res) => {
       process.env.JWT_SECRET_KEY,
       { expiresIn: "7 days" }
     );
-    return res.status(200).json({ userToken: token});
+    return res.status(200).json({ userToken: token });
   } catch (error) {
     console.log(error);
     res.status(500).json({
