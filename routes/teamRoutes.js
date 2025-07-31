@@ -9,4 +9,6 @@ const teamController = require("../controller/teamController");
 router.post("/", verifyJWT, teamController.createNewTeam);
 
 //Route to fetch all Teams.
+router.get("/", verifyJWT, teamController.fetchAllTeams);
+
 module.exports = router;
