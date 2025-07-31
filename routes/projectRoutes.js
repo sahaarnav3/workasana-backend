@@ -4,7 +4,7 @@ const router = express.Router();
 const projectController = require("../controller/projectController");
 const verifyJWT = require("../middlewares/verifyJWT");
 
-console.log("Project Router Loaded.");
+// console.log("Project Router Loaded.");
 
 //Route to create new Project
 router.post("/", verifyJWT, projectController.createNewProject);

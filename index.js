@@ -8,6 +8,7 @@ const { initialiseDatabase } = require("./db/db.connect");
 //Importing Routes
 const userRoutes = require("./routes/userRoutes");
 const projectRoutes = require("./routes/projectRoutes");
+const teamRoutes = require("./routes/teamRoutes");
 
 const corsOption = {
   origin: "*",
@@ -27,6 +28,8 @@ app.get("/", (req, res) => {
 app.use("/auth", userRoutes);
 //Project API
 app.use("/projects", projectRoutes);
+//Team API
+app.use("/teams", teamRoutes);
 
 app.listen(PORT, () => {
   console.log("Server is running on PORT:", PORT);
