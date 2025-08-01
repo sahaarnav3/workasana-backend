@@ -51,7 +51,7 @@ module.exports.fetchTasks = async (req, res) => {
         searchQuery.timeToComplete = req.query.timeToComplete;
     if(req.query.status)
         searchQuery.status = req.query.status;
-    console.log(searchQuery);
+    // console.log(searchQuery);
     const taskResponse = await Task.find(searchQuery)
       .populate(["project", "team", "owners"])
       .exec();
