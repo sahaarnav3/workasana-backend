@@ -9,6 +9,7 @@ const { initialiseDatabase } = require("./db/db.connect");
 const userRoutes = require("./routes/userRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const teamRoutes = require("./routes/teamRoutes");
+const tagRoutes = require("./routes/tagRoutes");
 
 const corsOption = {
   origin: "*",
@@ -30,6 +31,8 @@ app.use("/auth", userRoutes);
 app.use("/projects", projectRoutes);
 //Team API
 app.use("/teams", teamRoutes);
+//Tags API
+app.use("/tags", tagRoutes);
 
 app.listen(PORT, () => {
   console.log("Server is running on PORT:", PORT);
