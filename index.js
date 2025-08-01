@@ -10,6 +10,7 @@ const userRoutes = require("./routes/userRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const teamRoutes = require("./routes/teamRoutes");
 const tagRoutes = require("./routes/tagRoutes");
+const taskRoutes = require("./routes/taskRoutes");
 
 const corsOption = {
   origin: "*",
@@ -33,6 +34,8 @@ app.use("/projects", projectRoutes);
 app.use("/teams", teamRoutes);
 //Tags API
 app.use("/tags", tagRoutes);
+//Task API
+app.use("/tasks", taskRoutes);
 
 app.listen(PORT, () => {
   console.log("Server is running on PORT:", PORT);
