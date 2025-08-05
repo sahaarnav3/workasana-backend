@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
+const jwt = require('jsonwebtoken');
 
 //Function to convert text password into hash and return it
 async function passwordHashAndSave(password) {
@@ -54,7 +55,7 @@ module.exports.signUpUser = async (req, res) => {
 };
 
 //Controller to Log-In a user.
-module.exports.login = async (req, res) => async (req, res) => {
+module.exports.login = async (req, res) => {
   try {
     if (!(req.body.email && req.body.password))
       return res
