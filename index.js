@@ -37,6 +37,11 @@ app.use("/tags", tagRoutes);
 //Task API
 app.use("/tasks", taskRoutes);
 
-app.listen(PORT, () => {
-  console.log("Server is running on PORT:", PORT);
-});
+const startServer = async () => {
+  await initialiseDatabase();
+  app.listen(PORT, () => {
+    console.log("Server is running on PORT:", PORT);
+  });
+};
+
+startServer();
