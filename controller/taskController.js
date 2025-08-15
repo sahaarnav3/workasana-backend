@@ -20,12 +20,15 @@ module.exports.createNewTask = async (req, res) => {
           "Please enter values in all the fields. No field other than status can be kept empty.",
       });
     const task = new Task(taskBody);
-    const taskResponse = await task.save();
+    const savedTask = await task.save();
+    const taskResponse = await Task.findById(savedTask._id).populate("team");
     if (!taskResponse)
       return res
         .status(400)
         .json({ error: "Task details couldn't be saved. Please try again." });
-    return res.status(200).json({ message: "Task saved successfully.", data: taskResponse });
+    return res
+      .status(200)
+      .json({ message: "Task saved successfully.", data: taskResponse });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -75,12 +78,10 @@ module.exports.updateTask = async (req, res) => {
       .populate(["project", "team", "owners"])
       .exec();
     if (!taskResponse)
-      return res
-        .status(404)
-        .json({
-          error:
-            "Task with given ID not found. Please try again with correct ID.",
-        });
+      return res.status(404).json({
+        error:
+          "Task with given ID not found. Please try again with correct ID.",
+      });
     return res.status(200).json(taskResponse);
   } catch (error) {
     console.log(error);
@@ -95,9 +96,13 @@ module.exports.updateTask = async (req, res) => {
 module.exports.deleteTask = async (req, res) => {
   try {
     const taskResponse = await Task.findByIdAndDelete(req.params.id);
-    if(!taskResponse)
-      return res.status(404).json({ error: "Task with given ID doesn't exist. Try again with correct ID."})
-    return res.status(200).json({ message: "Task deleted successfully."});
+    if (!taskResponse)
+      return res
+        .status(404)
+        .json({
+          error: "Task with given ID doesn't exist. Try again with correct ID.",
+        });
+    return res.status(200).json({ message: "Task deleted successfully." });
   } catch (error) {
     console.log(error);
     res.status(500).json({
