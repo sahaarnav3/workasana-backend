@@ -25,7 +25,7 @@ module.exports.createNewTask = async (req, res) => {
       return res
         .status(400)
         .json({ error: "Task details couldn't be saved. Please try again." });
-    return res.status(200).json({ message: "Task saved successfully." });
+    return res.status(200).json({ message: "Task saved successfully.", data: taskResponse });
   } catch (error) {
     console.log(error);
     res.status(500).json({
