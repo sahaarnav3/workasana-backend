@@ -15,5 +15,7 @@ router.post("/login", userController.login);
 //Route to fetch current logged in user details.
 router.get("/me", verifyJWT, userController.currentUser);
 
+//Route to fetch all the users
+router.get("/users", verifyJWT, userController.fetchAllUsers);
 
 module.exports = router;

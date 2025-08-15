@@ -100,12 +100,28 @@ module.exports.login = async (req, res) => {
 //Controller to fetch current logged in user details, based on token.
 module.exports.currentUser = async (req, res) => {
   try {
-    res.status(200).json(req.user);
+    return res.status(200).json(req.user);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       error:
         "Some error occurred with the request itself. Please check logs and try again.",
     });
   }
 };
+
+//Controller to fetch all the users present.
+module.exports.fetchAllUsers = async (req, res) => {
+  try {
+    const userResponse = await User.find().select('_id name').exec();
+    if(!userResponse)
+      return res.status(400).json({ error: "Either no users present or some other error occurred. Please try again."});
+    return res.status(200).json(userResponse);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error:
+        "Some error occurred with the request itself. Please check logs and try again.",
+    });
+  }
+}
