@@ -21,7 +21,7 @@ module.exports.createNewTask = async (req, res) => {
       });
     const task = new Task(taskBody);
     const savedTask = await task.save();
-    const taskResponse = await Task.findById(savedTask._id).populate("team");
+    const taskResponse = await Task.findById(savedTask._id).populate(["team", 'project']);
     if (!taskResponse)
       return res
         .status(400)
